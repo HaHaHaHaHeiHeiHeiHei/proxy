@@ -344,7 +344,6 @@ write_sing_box_config() {
   cp "${CONFIG_PATH}" "${CONFIG_PATH}.bak.$(date +%F-%H%M%S)" 2>/dev/null || true
 
   local json_uuid json_server json_public_key json_sni json_short_id json_fingerprint json_flow
-  local reality_spider_line
   json_uuid="$(json_escape "${SB_UUID}")"
   json_server="$(json_escape "${SB_SERVER}")"
   json_public_key="$(json_escape "${SB_PUBLIC_KEY}")"
@@ -352,12 +351,6 @@ write_sing_box_config() {
   json_short_id="$(json_escape "${SB_SHORT_ID}")"
   json_fingerprint="$(json_escape "${SB_FINGERPRINT}")"
   json_flow="$(json_escape "${SB_FLOW}")"
-  reality_spider_line=""
-
-  if [[ -n "${SB_SPIDER_X:-}" ]]; then
-    reality_spider_line=",
-          \"spider_x\": \"$(json_escape "${SB_SPIDER_X}")\""
-  fi
 
   cat > "${CONFIG_PATH}" <<EOF
 {
@@ -392,7 +385,7 @@ write_sing_box_config() {
         "reality": {
           "enabled": true,
           "public_key": "${json_public_key}",
-          "short_id": "${json_short_id}"${reality_spider_line}
+          "short_id": "${json_short_id}"
         }
       },
       "packet_encoding": "xudp"
