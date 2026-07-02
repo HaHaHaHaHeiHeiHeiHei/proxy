@@ -104,7 +104,7 @@ env VERSION=1.13.14 bash install.sh
 - `sid`，写入 `reality.short_id`，缺省为空字符串
 - `fp`，缺省为 `chrome`
 - `flow`，缺省为 `xtls-rprx-vision`
-- `spx`，可选，URL decode 后写入 `reality.spider_x`
+- `spx`，可选，会解析但不会写入 sing-box 1.13 客户端配置
 
 ## 常用命令
 
