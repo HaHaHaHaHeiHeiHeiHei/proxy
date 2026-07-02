@@ -13,10 +13,10 @@
 
 ## Ubuntu / Debian 一键运行
 
-把 `<your-username>/<your-repo>` 替换成你发布后的 GitHub 用户名和仓库名：
+当前公开仓库是 `HaHaHaHaHeiHeiHeiHei/proxy`，命令可直接使用：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/<your-repo>/main/install.sh -o /tmp/install-singbox.sh && sudo bash /tmp/install-singbox.sh
+curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install.sh -o /tmp/install-singbox.sh && sudo bash /tmp/install-singbox.sh
 ```
 
 脚本会提示输入 VLESS Reality 节点链接：
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/<your-username>/<your-repo>/main/in
 Ubuntu / Debian 是主支持平台。其他 Linux 可以先运行通用入口查看提示：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/<your-repo>/main/install-linux.sh -o /tmp/install-singbox-linux.sh && sudo bash /tmp/install-singbox-linux.sh
+curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install-linux.sh -o /tmp/install-singbox-linux.sh && sudo bash /tmp/install-singbox-linux.sh
 ```
 
 如果系统不是 Debian / Ubuntu，脚本会提示当前系统暂不支持自动安装 deb 包。你可以手动安装 sing-box 后，在完整项目目录中运行：
@@ -57,7 +57,7 @@ sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443
 单文件一键运行时也可以这样传入：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/<your-repo>/main/install.sh -o /tmp/install-singbox.sh && sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&encryption=none&security=reality&pbk=example_public_key&fp=chrome&sni=example.com&sid=example_short_id&spx=%2F&flow=xtls-rprx-vision' bash /tmp/install-singbox.sh
+curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install.sh -o /tmp/install-singbox.sh && sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&encryption=none&security=reality&pbk=example_public_key&fp=chrome&sni=example.com&sid=example_short_id&spx=%2F&flow=xtls-rprx-vision' bash /tmp/install-singbox.sh
 ```
 
 ## 自定义端口

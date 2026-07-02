@@ -45,7 +45,7 @@ run_install_sh() {
     exec bash "${remote_install}"
   fi
 
-  die "未找到 install.sh。请在完整项目目录中运行，或设置 RAW_BASE_URL=https://raw.githubusercontent.com/<your-username>/<your-repo>/main 后重试"
+  die "未找到 install.sh。请在完整项目目录中运行，或设置 RAW_BASE_URL=https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main 后重试"
 }
 
 if is_debian_like; then
