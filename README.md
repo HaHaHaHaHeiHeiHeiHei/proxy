@@ -22,8 +22,8 @@ curl -fsSL https://raw.githubusercontent.com/<your-username>/<your-repo>/main/in
 脚本会提示输入 VLESS Reality 节点链接：
 
 ```text
-请输入 VLESS Reality 节点链接：
 支持格式：vless://uuid@host:port?type=tcp&security=reality&pbk=xxx&sni=xxx&sid=xxx&fp=chrome&flow=xtls-rprx-vision
+请输入vless链接:
 ```
 
 ## 其他 Linux
@@ -46,6 +46,12 @@ sudo env SKIP_SING_BOX_DEB_INSTALL=1 bash install.sh
 
 ```bash
 sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&encryption=none&security=reality&pbk=example_public_key&fp=chrome&sni=example.com&sid=example_short_id&spx=%2F&flow=xtls-rprx-vision' bash install.sh
+```
+
+如果链接是从网页复制出来的，参数分隔符可能显示为 `&amp;`。脚本会自动兼容这种格式：
+
+```bash
+sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&amp;encryption=none&amp;security=reality&amp;pbk=example_public_key&amp;fp=chrome&amp;sni=example.com&amp;sid=example_short_id&amp;spx=%2F&amp;flow=xtls-rprx-vision' bash install.sh
 ```
 
 单文件一键运行时也可以这样传入：

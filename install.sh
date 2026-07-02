@@ -159,6 +159,7 @@ fallback_parse_vless_url() {
 
   local body without_fragment authority query uuid_part host_port raw_server raw_port
   body="${VLESS_URL#vless://}"
+  body="$(printf '%s' "${body}" | sed 's/&amp;/\&/g; s/&#38;/\&/g')"
   without_fragment="${body%%#*}"
   authority="${without_fragment%%\?*}"
   query=""
@@ -213,6 +214,8 @@ fallback_parse_vless_url() {
 
     key="$(fallback_url_decode "${raw_key}")"
     value="$(fallback_url_decode "${raw_value}")"
+    key="${key#amp;}"
+    key="${key#\#38;}"
 
     case "${key}" in
       type) SB_NETWORK="${value:-tcp}" ;;
@@ -245,8 +248,9 @@ read_vless_url() {
     return 0
   fi
 
-  echo_step "请输入 VLESS Reality 节点链接："
+  echo_step "等待输入 VLESS Reality 节点链接"
   echo "支持格式：vless://uuid@host:port?type=tcp&security=reality&pbk=xxx&sni=xxx&sid=xxx&fp=chrome&flow=xtls-rprx-vision"
+  printf '请输入vless链接: '
   read -r VLESS_URL
   export VLESS_URL
 

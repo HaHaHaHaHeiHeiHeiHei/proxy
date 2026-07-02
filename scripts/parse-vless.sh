@@ -28,6 +28,7 @@ parse_vless_url() {
 
   local body without_fragment authority query uuid_part host_port raw_server raw_port
   body="${VLESS_URL#vless://}"
+  body="$(printf '%s' "${body}" | sed 's/&amp;/\&/g; s/&#38;/\&/g')"
   without_fragment="${body%%#*}"
   authority="${without_fragment%%\?*}"
   query=""
@@ -100,6 +101,8 @@ parse_vless_url() {
 
     key="$(url_decode "${raw_key}")"
     value="$(url_decode "${raw_value}")"
+    key="${key#amp;}"
+    key="${key#\#38;}"
 
     case "${key}" in
       type)
