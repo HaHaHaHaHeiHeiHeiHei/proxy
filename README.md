@@ -19,13 +19,15 @@
 curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install.sh -o /tmp/install-singbox.sh && bash /tmp/install-singbox.sh
 ```
 
+`curl -fsSL` 下载阶段默认不显示进度；下载完成并开始执行脚本后，会先提示输入 VLESS 链接，然后再安装 sing-box 和启动代理。
+
 脚本需要 root 权限。如果当前用户不是 root，并且系统安装了 `sudo`，可以把最后一段改成 `sudo bash /tmp/install-singbox.sh`。
 
 脚本会提示输入 VLESS Reality 节点链接：
 
 ```text
 支持格式：vless://uuid@host:port?type=tcp&security=reality&pbk=xxx&sni=xxx&sid=xxx&fp=chrome&flow=xtls-rprx-vision
-请输入vless链接:
+请输入vless链接：
 ```
 
 ## 其他 Linux
