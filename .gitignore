@@ -1,0 +1,10 @@
+.env
+*.bak
+config.json
+*.log
+.DS_Store
+
+/outputs/
+/work/
+*.pid
+sing-box_*.deb
