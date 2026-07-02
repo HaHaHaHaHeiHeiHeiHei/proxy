@@ -16,8 +16,10 @@
 当前公开仓库是 `HaHaHaHaHeiHeiHeiHei/proxy`，命令可直接使用：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install.sh -o /tmp/install-singbox.sh && sudo bash /tmp/install-singbox.sh
+curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install.sh -o /tmp/install-singbox.sh && bash /tmp/install-singbox.sh
 ```
+
+脚本需要 root 权限。如果当前用户不是 root，并且系统安装了 `sudo`，可以把最后一段改成 `sudo bash /tmp/install-singbox.sh`。
 
 脚本会提示输入 VLESS Reality 节点链接：
 
@@ -31,13 +33,13 @@ curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/ins
 Ubuntu / Debian 是主支持平台。其他 Linux 可以先运行通用入口查看提示：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install-linux.sh -o /tmp/install-singbox-linux.sh && sudo bash /tmp/install-singbox-linux.sh
+curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install-linux.sh -o /tmp/install-singbox-linux.sh && bash /tmp/install-singbox-linux.sh
 ```
 
 如果系统不是 Debian / Ubuntu，脚本会提示当前系统暂不支持自动安装 deb 包。你可以手动安装 sing-box 后，在完整项目目录中运行：
 
 ```bash
-sudo env SKIP_SING_BOX_DEB_INSTALL=1 bash install.sh
+env SKIP_SING_BOX_DEB_INSTALL=1 bash install.sh
 ```
 
 ## 非交互式运行
@@ -45,19 +47,19 @@ sudo env SKIP_SING_BOX_DEB_INSTALL=1 bash install.sh
 可以通过 `VLESS_URL` 环境变量传入链接，脚本就不会再提示输入：
 
 ```bash
-sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&encryption=none&security=reality&pbk=example_public_key&fp=chrome&sni=example.com&sid=example_short_id&spx=%2F&flow=xtls-rprx-vision' bash install.sh
+env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&encryption=none&security=reality&pbk=example_public_key&fp=chrome&sni=example.com&sid=example_short_id&spx=%2F&flow=xtls-rprx-vision' bash install.sh
 ```
 
 如果链接是从网页复制出来的，参数分隔符可能显示为 `&amp;`。脚本会自动兼容这种格式：
 
 ```bash
-sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&amp;encryption=none&amp;security=reality&amp;pbk=example_public_key&amp;fp=chrome&amp;sni=example.com&amp;sid=example_short_id&amp;spx=%2F&amp;flow=xtls-rprx-vision' bash install.sh
+env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&amp;encryption=none&amp;security=reality&amp;pbk=example_public_key&amp;fp=chrome&amp;sni=example.com&amp;sid=example_short_id&amp;spx=%2F&amp;flow=xtls-rprx-vision' bash install.sh
 ```
 
 单文件一键运行时也可以这样传入：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install.sh -o /tmp/install-singbox.sh && sudo env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&encryption=none&security=reality&pbk=example_public_key&fp=chrome&sni=example.com&sid=example_short_id&spx=%2F&flow=xtls-rprx-vision' bash /tmp/install-singbox.sh
+curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/install.sh -o /tmp/install-singbox.sh && env VLESS_URL='vless://00000000-0000-0000-0000-000000000000@example.com:443?type=tcp&encryption=none&security=reality&pbk=example_public_key&fp=chrome&sni=example.com&sid=example_short_id&spx=%2F&flow=xtls-rprx-vision' bash /tmp/install-singbox.sh
 ```
 
 ## 自定义端口
@@ -65,7 +67,7 @@ curl -fsSL https://raw.githubusercontent.com/HaHaHaHaHeiHeiHeiHei/proxy/main/ins
 默认本地代理端口是 `10808`。可以用 `LOCAL_PORT` 覆盖：
 
 ```bash
-sudo env LOCAL_PORT=10809 bash install.sh
+env LOCAL_PORT=10809 bash install.sh
 ```
 
 安装完成后，本地代理地址会变为 `127.0.0.1:10809`。
@@ -75,7 +77,7 @@ sudo env LOCAL_PORT=10809 bash install.sh
 默认安装 `1.13.14`。可以用 `VERSION` 覆盖：
 
 ```bash
-sudo env VERSION=1.13.14 bash install.sh
+env VERSION=1.13.14 bash install.sh
 ```
 
 脚本会下载对应版本的 sing-box deb 包，例如 `sing-box_1.13.14_linux_amd64.deb`。
@@ -119,7 +121,7 @@ tail -n 100 /var/log/sing-box.log
 停止 sing-box：
 
 ```bash
-sudo pkill -x sing-box
+pkill -x sing-box
 ```
 
 取消当前 shell 的代理环境变量：
@@ -131,7 +133,7 @@ unset http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY
 如果还想取消后续 shell 自动加载代理，可以删除 profile 文件，并移除 `.bashrc` 中对应的 source 行：
 
 ```bash
-sudo rm -f /etc/profile.d/proxy.sh
+rm -f /etc/profile.d/proxy.sh
 sed -i '\#\[ -f /etc/profile.d/proxy.sh \] && \. /etc/profile.d/proxy.sh#d' ~/.bashrc
 ```
 

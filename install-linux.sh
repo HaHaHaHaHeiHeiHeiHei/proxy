@@ -57,7 +57,7 @@ echo "当前系统暂不支持自动安装 deb 包。"
 echo "请手动安装 sing-box 后，再运行本项目的配置逻辑。"
 echo
 echo "如果你已经手动安装 sing-box，可以在完整项目目录中运行："
-echo "  sudo env SKIP_SING_BOX_DEB_INSTALL=1 bash install.sh"
+echo "  env SKIP_SING_BOX_DEB_INSTALL=1 bash install.sh"
 echo
 echo "如果你只下载了 install-linux.sh，请先下载完整项目，或设置 RAW_BASE_URL 后重试。"
 exit 1
