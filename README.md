@@ -76,7 +76,13 @@ env LOCAL_PORT=10809 bash install.sh
 
 ## 自定义 sing-box 版本
 
-默认安装 `1.13.14`。可以用 `VERSION` 覆盖：
+默认安装 `1.13.14`。推荐用 `SING_BOX_VERSION` 覆盖：
+
+```bash
+env SING_BOX_VERSION=1.13.14 bash install.sh
+```
+
+也兼容旧写法 `VERSION=...`：
 
 ```bash
 env VERSION=1.13.14 bash install.sh

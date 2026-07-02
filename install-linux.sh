@@ -12,20 +12,22 @@ die() {
 }
 
 is_debian_like() {
-  if [[ ! -r /etc/os-release ]]; then
-    return 1
-  fi
+  (
+    if [[ ! -r /etc/os-release ]]; then
+      exit 1
+    fi
 
-  # shellcheck disable=SC1091
-  . /etc/os-release
-  case " ${ID:-} ${ID_LIKE:-} " in
-    *" debian "*|*" ubuntu "*)
-      return 0
-      ;;
-    *)
-      return 1
-      ;;
-  esac
+    # shellcheck disable=SC1091
+    . /etc/os-release
+    case " ${ID:-} ${ID_LIKE:-} " in
+      *" debian "*|*" ubuntu "*)
+        exit 0
+        ;;
+      *)
+        exit 1
+        ;;
+    esac
+  )
 }
 
 run_install_sh() {

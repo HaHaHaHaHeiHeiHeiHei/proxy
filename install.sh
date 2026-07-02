@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-VERSION="${VERSION:-1.13.14}"
-VERSION="${VERSION#v}"
+SING_BOX_VERSION="${SING_BOX_VERSION:-${VERSION:-1.13.14}}"
+SING_BOX_VERSION="${SING_BOX_VERSION#v}"
 LOCAL_PORT="${LOCAL_PORT:-10808}"
 CONFIG_PATH="/etc/sing-box/config.json"
 LOG_PATH="/var/log/sing-box.log"
@@ -36,20 +36,22 @@ validate_local_port() {
 }
 
 is_debian_like() {
-  if [[ ! -r /etc/os-release ]]; then
-    return 1
-  fi
+  (
+    if [[ ! -r /etc/os-release ]]; then
+      exit 1
+    fi
 
-  # shellcheck disable=SC1091
-  . /etc/os-release
-  case " ${ID:-} ${ID_LIKE:-} " in
-    *" debian "*|*" ubuntu "*)
-      return 0
-      ;;
-    *)
-      return 1
-      ;;
-  esac
+    # shellcheck disable=SC1091
+    . /etc/os-release
+    case " ${ID:-} ${ID_LIKE:-} " in
+      *" debian "*|*" ubuntu "*)
+        exit 0
+        ;;
+      *)
+        exit 1
+        ;;
+    esac
+  )
 }
 
 apt_install_with_timeout() {
@@ -87,19 +89,19 @@ detect_arch() {
 download_sing_box_deb() {
   local arch pkg tmp_pkg proxy_url direct_url
   arch="$(detect_arch)"
-  pkg="sing-box_${VERSION}_linux_${arch}.deb"
+  pkg="sing-box_${SING_BOX_VERSION}_linux_${arch}.deb"
   tmp_pkg="/tmp/${pkg}"
-  proxy_url="https://gh-proxy.com/https://github.com/SagerNet/sing-box/releases/download/v${VERSION}/${pkg}"
-  direct_url="https://github.com/SagerNet/sing-box/releases/download/v${VERSION}/${pkg}"
+  proxy_url="https://gh-proxy.com/https://github.com/SagerNet/sing-box/releases/download/v${SING_BOX_VERSION}/${pkg}"
+  direct_url="https://github.com/SagerNet/sing-box/releases/download/v${SING_BOX_VERSION}/${pkg}"
 
   if [[ -s "${tmp_pkg}" ]]; then
     echo_step "检测到 ${tmp_pkg} 已存在且非空，跳过下载"
   else
-    echo_step "下载 sing-box ${VERSION} (${arch})"
+    echo_step "下载 sing-box ${SING_BOX_VERSION} (${arch})"
     if ! curl -fL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 180 -o "${tmp_pkg}" "${proxy_url}"; then
       echo "GitHub 代理下载失败，尝试直连 GitHub..."
       curl -fL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 180 -o "${tmp_pkg}" "${direct_url}" \
-        || die "下载 sing-box deb 包失败，请检查网络或 VERSION=${VERSION} 是否存在"
+        || die "下载 sing-box deb 包失败，请检查网络或 SING_BOX_VERSION=${SING_BOX_VERSION} 是否存在"
     fi
   fi
 
