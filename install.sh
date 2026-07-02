@@ -250,7 +250,7 @@ read_vless_url() {
 
   echo_step "等待输入 VLESS Reality 节点链接"
   echo "支持格式：vless://uuid@host:port?type=tcp&security=reality&pbk=xxx&sni=xxx&sid=xxx&fp=chrome&flow=xtls-rprx-vision"
-  printf '请输入vless链接: '
+  printf '请输入vless链接：'
   read -r VLESS_URL
   export VLESS_URL
 
@@ -475,9 +475,9 @@ print_success() {
 main() {
   require_root
   validate_local_port
-  install_sing_box
   read_vless_url
   parse_vless_link
+  install_sing_box
   write_sing_box_config
   check_sing_box_config
   start_sing_box
