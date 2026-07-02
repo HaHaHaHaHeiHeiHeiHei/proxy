@@ -113,7 +113,31 @@ download_sing_box_deb() {
   SING_BOX_DEB_PATH="${tmp_pkg}"
 }
 
+get_installed_sing_box_version() {
+  local first_line version
+  command -v sing-box >/dev/null 2>&1 || return 1
+
+  IFS= read -r first_line < <(sing-box version 2>/dev/null) || return 1
+  case "${first_line}" in
+    "sing-box version "*)
+      version="${first_line#sing-box version }"
+      printf '%s' "${version%% *}"
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+installed_sing_box_matches() {
+  local installed_version
+  installed_version="$(get_installed_sing_box_version)" || return 1
+  [[ "${installed_version}" == "${SING_BOX_VERSION}" ]]
+}
+
 install_sing_box() {
+  local installed_version
+
   if [[ "${SKIP_SING_BOX_DEB_INSTALL:-0}" == "1" ]]; then
     echo_step "已设置 SKIP_SING_BOX_DEB_INSTALL=1，跳过 deb 安装"
     command -v sing-box >/dev/null 2>&1 || die "未找到 sing-box，请先手动安装 sing-box"
@@ -122,10 +146,18 @@ install_sing_box() {
   fi
 
   is_debian_like || die "install.sh 主要支持 Ubuntu / Debian。其他 Linux 请使用 install-linux.sh"
-  command -v apt-get >/dev/null 2>&1 || die "未找到 apt-get，无法自动安装依赖"
-  command -v apt >/dev/null 2>&1 || die "未找到 apt，无法安装本地 deb 包"
+  command -v apt-get >/dev/null 2>&1 || die "未找到 apt-get，无法安装本地 deb 包"
   command -v dpkg >/dev/null 2>&1 || die "未找到 dpkg，无法识别架构"
   command -v dpkg-deb >/dev/null 2>&1 || die "未找到 dpkg-deb，无法验证 deb 包"
+
+  if installed_version="$(get_installed_sing_box_version)"; then
+    if [[ "${installed_version}" == "${SING_BOX_VERSION}" ]]; then
+      echo_step "检测到 sing-box ${installed_version} 已安装，跳过 deb 安装"
+      sing-box version
+      return 0
+    fi
+    echo_step "检测到 sing-box ${installed_version}，准备安装 ${SING_BOX_VERSION}"
+  fi
 
   ensure_curl
 
@@ -134,12 +166,19 @@ install_sing_box() {
   tmp_pkg="${SING_BOX_DEB_PATH}"
 
   echo_step "安装 sing-box deb 包"
-  timeout 120s apt install -y \
+  if ! DEBIAN_FRONTEND=noninteractive timeout 120s apt-get install -y \
     -o DPkg::Lock::Timeout=120 \
+    -o Dpkg::Use-Pty=0 \
     -o Acquire::http::Timeout=10 \
     -o Acquire::https::Timeout=10 \
     -o Acquire::Retries=0 \
-    "${tmp_pkg}" || die "apt 安装 sing-box deb 包失败"
+    "${tmp_pkg}"; then
+    if installed_sing_box_matches; then
+      echo "apt-get 未正常返回，但 sing-box ${SING_BOX_VERSION} 已可用，继续。"
+    else
+      die "apt-get 安装 sing-box deb 包失败"
+    fi
+  fi
 
   echo_step "sing-box 版本"
   sing-box version
